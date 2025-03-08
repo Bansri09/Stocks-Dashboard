@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Shafarik:wght@400;700&display=swap" rel="stylesheet">
+    <title>Stocks Dashboard</title>
+    <link rel="stylesheet" href="Frontend/css/styles.css">
+    <script src="https://d3js.org/d3.v7.min.js"></script>   
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <img src="Frontend/assets/logo.svg" alt="Stocks Dashboard Logo" height="15%">
+            <hr class="separator">
+            <button id="refreshButton" class="last-updated">Refresh Backend</button>         
+            <div class="selectors">
+                <hr class="separator">
+                <div class="selector">
+                    <input type="text" id="ticker-selector" placeholder="Type to search..." onkeyup="fetchSuggestions()" onclick="showSuggestions()">
+                    <ul id="suggestions" style="display: none;"></ul>
+                </div>
+                <div class="selected-tickers">
+                    <p>Selected Ticker/s</p>
+                    <ul id="selected-list" class="selected-list"></ul>
+                </div>
+                <hr class="separator">
+                <p>Select Plot Layers</p>
+                <div class = 'checkbox'>
+                    <label><input type="checkbox" id="show-historical-price" checked>Historical price</label>
+                    <label><input type="checkbox" id="show-rsi"> RSI</label>
+                    <label><input type="checkbox" id="show-bollinger"> Bollinger Bands</label>
+                    <label><input type="checkbox" id="show-drawdown"> Drawdown Chart</label>
+                </div>
+                <hr class="separator">
+                <button id="plot-button" class="last-updated">Plot</button>        
+            </div>
+            <hr class="separator">
+            <p>Health & Ratios</p>
+            <div class = 'ratios' id="ratios"></div>
+        </div>
+        <div class="main-content">
+            <div class="header">
+                <div class="navigation">
+                    <button id="overview" class="nav-button">Ticker Overview</button>
+                    <button id="historical" class="nav-button">Historical S&P500 Data</button>
+                </div>
+            </div>
+            <div class="shadow">
+            <div class="shadow_p2">
+                <div class="stock-details_p2">
+                    <div class="stock-header">
+                        <span id= 'selected-ticker'class="ticker">test</span>
+                        <button id="toggleButton">Stop Sliding</button>
+                    </div>
+                    <div class="chart_p2 slider" id='plot_p2'>
+                     <!-- Plot will be here -->
+                    </div>
+                </div>
+            </div>
+            </div>  
+        </div>
+        <div id="tooltip" style="position: absolute; display: none; background-color: white; border: 1px solid black; padding: 5px;"></div>    
+    </div>
+    <script src="Frontend/js/config.js"></script>
+    <script src="Frontend/js/url.js"></script>
+    <script src="Frontend/js/p2_scripts/ratios_p2.js"></script>
+    <script src="Frontend/js/p2_scripts/UIscripts_p2.js"></script>
+    <script src="Frontend/js/p2_scripts/scripts_p2.js"></script>
+    <script src="Frontend/js/p2_scripts/plots_p2.js"></script>
+    <script src="Frontend/js/p2_scripts/events_p2.js"></script>
+    <script src="Frontend/js/p2_scripts/verifyTicker_p2.js"></script> 
+</body>
+</html>

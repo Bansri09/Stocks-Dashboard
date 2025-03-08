@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://fonts.googleapis.com/css2?family=Shafarik:wght@400;700&display=swap" rel="stylesheet">
+    <title>Stocks Dashboard</title>
+    <link rel="stylesheet" href="Frontend/css/styles.css">
+    <script src="https://d3js.org/d3.v6.min.js"></script>
+</head>
+<body>
+    <div class="container">
+        <div class="sidebar">
+            <img src="Frontend/assets/Logo.svg" alt="Stocks Dashboard Logo" height="15%">
+            <hr class="separator">
+                <button id="refreshButton" class="last-updated">Reload Page</button>         
+            <div class="selectors">
+                <hr class="separator">
+                <div class="selector">
+                    <input type="text" id="ticker-selector" placeholder="Type to search..." onkeyup="fetchSuggestions()" onclick="showSuggestions()">
+                    <ul id="suggestions" style="display: none;"></ul>
+                </div>
+                <div class="selected-tickers">
+                    <p>Selected Ticker/s</p>
+                    <ul id="selected-list" class="selected-list"></ul>
+                </div>
+                <hr class="separator">
+                <p>Select Date Range</p>
+                <div class="selector">
+                    <select id="range-selector">
+                        <option value="1d" selected>1d</option>
+                        <option value="5d">5d</option>
+                        <option value="1mo">1mo</option>
+                        <!-- <option value="3mo">3mo</option> -->
+                        <option value="6mo">6mo</option>
+                        <option value="1y">1y</option>
+                        <option value="5y">5y</option>
+                    </select>
+                </div>                
+            </div>
+            <hr class="separator">
+            <div class="recommendation-card">
+                <p>Recommendations</p>
+                <ul id="recommended-symbols"></ul>
+            </div>            
+        </div>
+        <div class="main-content">
+            <div class="header">
+                <div class="navigation">
+                    <button id= 'overview' class="nav-button">Ticker Overview</button>
+                    <button id= 'historical' class="nav-button">Historical S&P500 Data</button>
+                    <!-- <button id= 'ratios' class="nav-button">Health & Ratios</button> -->
+                </div>
+            </div>
+            <div class="shadow">
+                <div class="portfolio-carousel">
+                    <div class="portfolio">
+                        <div class="portfolio-item">
+                            <div class="portfolio-header">
+                                <img src="Frontend/assets/apple.svg" alt="Apple Logo" class="logo">
+                            </div>                            
+                            <div class="portfolio-body">
+                                <span id="ticker-name-1"></span>
+                                <span id="ticker-change-1"></span>
+                                <span id="ticker-value-1"></span>
+                            </div>
+                        </div>
+                        <div class="portfolio-item">
+                            <div class="portfolio-header">
+                                <img src="Frontend/assets/nvidia.svg" alt="Nvidia Logo" class="logo">
+                            </div>                            
+                            <div class="portfolio-body">
+                                <span id="ticker-name-2"></span>
+                                <span id="ticker-change-2"></span>
+                                <span id="ticker-value-2"></span>
+                            </div>
+                        </div>
+                        <div class="portfolio-item">
+                            <div class="portfolio-header">
+                                <img src="Frontend/assets/Amazon.svg" alt="Amazon Logo" class="logo">
+                            </div>                            
+                            <div class="portfolio-body">
+                                <span id="ticker-name-3"></span>
+                                <span id="ticker-change-3"></span>
+                                <span id="ticker-value-3"></span>
+                            </div>
+                        </div>
+                        <div class="portfolio-item">
+                            <div class="portfolio-header">
+                                <img src="Frontend/assets/tesla.svg" alt="Tesla Logo" class="logo">
+                            </div>                            
+                            <div class="portfolio-body">
+                                <span id="ticker-name-4"></span>
+                                <span id="ticker-change-4"></span>
+                                <span id="ticker-value-4"></span>
+                            </div>
+                        </div>
+                        <div class="portfolio-item">
+                            <div class="portfolio-header">
+                                <img src="Frontend/assets/netflix.svg" alt="Netflix Logo" class="logo">
+                            </div>                            
+                            <div class="portfolio-body">
+                                <span id="ticker-name-5"></span>
+                                <span id="ticker-change-5"></span>
+                                <span id="ticker-value-5"></span>
+                            </div>
+                        </div>
+                        <div class="portfolio-item">
+                            <div class="portfolio-header">
+                                <img src="Frontend/assets/mcdonalds.svg" alt="McDonald's Logo" class="logo">
+                            </div>                            
+                            <div class="portfolio-body">
+                                <span id="ticker-name-6"></span>
+                                <span id="ticker-change-6"></span>
+                                <span id="ticker-value-6"></span>
+                            </div>
+                        </div>
+                    </div>
+                    <button class="carousel-button prev">❮</button>
+                    <button class="carousel-button next">❯</button>
+                </div>                
+                <div class="stock-details">
+                    <div class="stock-header">
+                        <span id= 'selected-ticker'class="ticker"> </span>
+                    </div>
+                    <div class="stock-price">
+                        <span id= 'selected-ticker-price'class="price"></span>
+                            <div class="layer-selector">
+                                <select id="layer-selector">
+                                    <option value="" selected>Select Plot Layers</option>
+                                    <option value="layer3">Candlestick</option>
+                                </select>
+                            </div>                       
+                        <div class="chart-intervals">
+                            <button id= 'interval-1' class="interval-button">1m</button>
+                            <button id= 'interval-2' class="interval-button active">5m</button>
+                            <button id= 'interval-3' class="interval-button">15m</button>
+                            <button id= 'interval-4' class="interval-button">1d</button>
+                            <button id= 'interval-5' class="interval-button">1wk</button>
+                            <button id= 'interval-6' class="interval-button">1mo</button>
+                        </div>
+                    </div>
+                    <div class="chart" id='plot'>
+                        <!-- Plot will be here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div id="tooltip" style="position: absolute; display: none; background-color: white; border: 1px solid black; padding: 5px;"></div>    
+    </div>
+    <script src="Frontend/js/config.js"></script>
+    <script src="Frontend/js/url.js"></script>
+    <script src="Frontend/js/p1_scripts/UIscripts_p1.js"></script>
+    <script src="Frontend/js/p1_scripts/events_p1.js"></script>
+    <script src="Frontend/js/p1_scripts/plot_p1.js"></script>
+    <script src="Frontend/js/p1_scripts/recommendations_p1.js"></script>
+    <script src="Frontend/js/p1_scripts/portfolio_p1.js"></script>
+    <script src="Frontend/js/p1_scripts/layers_p1.js"></script>
+</body>
+</html>
